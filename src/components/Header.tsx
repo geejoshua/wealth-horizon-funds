@@ -49,8 +49,8 @@ const Header = () => {
             <Button variant="outline" className="text-wealth-navy border-wealth-navy hover:bg-wealth-navy hover:text-white">
               Log In
             </Button>
-            <Button className="bg-wealth-navy text-white hover:bg-wealth-blue">
-              Get Started
+            <Button className="bg-wealth-navy text-white hover:bg-wealth-blue" asChild>
+              <Link to="/register">Get Started</Link>
             </Button>
           </div>
           
@@ -78,7 +78,9 @@ const Header = () => {
             ))}
             <div className="flex flex-col gap-3 pt-4 border-t border-gray-100">
               <Button variant="outline" className="w-full">Log In</Button>
-              <Button className="w-full bg-wealth-navy text-white">Get Started</Button>
+              <Button className="w-full bg-wealth-navy text-white" asChild>
+                <Link to="/register" onClick={() => setIsMenuOpen(false)}>Get Started</Link>
+              </Button>
             </div>
           </div>
         </div>
