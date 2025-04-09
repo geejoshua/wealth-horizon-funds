@@ -1,5 +1,5 @@
 
-import { Line, Bar, Pie } from "recharts";
+import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -45,65 +45,66 @@ const PerformanceChart = () => {
           
           <TabsContent value="returns" className="pt-6">
             <div className="h-80 w-full">
-              <Line
-                width={800}
-                height={300}
-                data={performanceData}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <Line
-                  type="monotone"
-                  dataKey="returns"
-                  stroke="#0E57B5"
-                  strokeWidth={2}
-                  activeDot={{ r: 8 }}
-                />
-              </Line>
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={performanceData}
+                  margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <Line
+                    type="monotone"
+                    dataKey="returns"
+                    stroke="#0E57B5"
+                    strokeWidth={2}
+                    activeDot={{ r: 8 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
           </TabsContent>
           
           <TabsContent value="comparison" className="pt-6">
             <div className="h-80 w-full">
-              <Bar
-                width={800}
-                height={300}
-                data={performanceData}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <Bar dataKey="returns" fill="#0E57B5" name="Your Returns" />
-                <Bar dataKey="benchmark" fill="#D4AF37" name="Market Benchmark" />
-              </Bar>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={performanceData}
+                  margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <Bar dataKey="returns" fill="#0E57B5" name="Your Returns" />
+                  <Bar dataKey="benchmark" fill="#D4AF37" name="Market Benchmark" />
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </TabsContent>
           
           <TabsContent value="allocation" className="pt-6">
             <div className="h-80 w-full flex justify-center">
-              <Pie
-                data={assetAllocation}
-                cx={200}
-                cy={150}
-                labelLine={false}
-                outerRadius={120}
-                fill="#8884d8"
-                dataKey="value"
-              >
-                {assetAllocation.map((entry, index) => (
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
                   <Pie
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
+                    data={assetAllocation}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    outerRadius={120}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {assetAllocation.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
             </div>
             <div className="grid grid-cols-5 gap-2 mt-4">
               {assetAllocation.map((item, index) => (

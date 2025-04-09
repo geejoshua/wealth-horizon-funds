@@ -81,7 +81,13 @@ const PortfolioSummary = ({
                   <span>{asset.name}</span>
                   <span className="font-medium">{formatCurrency(asset.value)} ({asset.percentage}%)</span>
                 </div>
-                <Progress value={asset.percentage} className="h-2" indicatorClassName={`bg-${asset.color}`} />
+                <Progress 
+                  value={asset.percentage} 
+                  className={`h-2 bg-gray-100`}
+                  style={{ 
+                    "--progress-background": `var(--${asset.color})` 
+                  } as React.CSSProperties} 
+                />
               </div>
             ))}
           </div>
