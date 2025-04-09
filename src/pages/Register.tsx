@@ -85,15 +85,23 @@ const Register = () => {
 
   const onSubmit = (data: FormValues) => {
     // For demonstration, we're just showing a success toast
-    // In a real app, you would send this data to your backend
     toast.success("Registration successful!", {
-      description: "Welcome to Wealth Horizon!",
+      description: "Please complete your KYC verification",
     });
     console.log("Form submitted:", data);
     
-    // Navigate to dashboard after successful registration
+    // Store user data in sessionStorage for the KYC flow
+    sessionStorage.setItem("userData", JSON.stringify({
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      country: data.country,
+      phoneNumber: data.phoneNumber,
+    }));
+    
+    // Navigate to KYC after successful registration
     setTimeout(() => {
-      navigate("/dashboard");
+      navigate("/kyc");
     }, 1500);
   };
 

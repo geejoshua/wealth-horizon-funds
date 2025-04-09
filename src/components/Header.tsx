@@ -1,12 +1,13 @@
 
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   
   const isActive = (path: string) => location.pathname === path;
   
@@ -46,7 +47,11 @@ const Header = () => {
           </nav>
           
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="outline" className="text-wealth-navy border-wealth-navy hover:bg-wealth-navy hover:text-white">
+            <Button 
+              variant="outline" 
+              className="text-wealth-navy border-wealth-navy hover:bg-wealth-navy hover:text-white"
+              onClick={() => navigate('/login')}
+            >
               Log In
             </Button>
             <Button className="bg-wealth-navy text-white hover:bg-wealth-blue" asChild>
@@ -77,7 +82,16 @@ const Header = () => {
               </Link>
             ))}
             <div className="flex flex-col gap-3 pt-4 border-t border-gray-100">
-              <Button variant="outline" className="w-full">Log In</Button>
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  navigate('/login');
+                }}
+              >
+                Log In
+              </Button>
               <Button className="w-full bg-wealth-navy text-white" asChild>
                 <Link to="/register" onClick={() => setIsMenuOpen(false)}>Get Started</Link>
               </Button>

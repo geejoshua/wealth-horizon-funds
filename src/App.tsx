@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import Investments from "./pages/Investments";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
+import KYC from "./pages/KYC";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/investments" element={<Investments />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/kyc" element={<KYC />} />
           {/* Future pages */}
           <Route path="/about" element={<Index />} />
           <Route path="/contact" element={<Index />} />
