@@ -1,23 +1,41 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LogOut } from 'lucide-react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   
+  // Check authentication status whenever location changes
+  useEffect(() => {
+    const authStatus = sessionStorage.getItem('isAuthenticated');
+    setIsAuthenticated(authStatus === 'true');
+  }, [location]);
+  
   const isActive = (path: string) => location.pathname === path;
   
+  // Define navigation items based on authentication status
   const navItems = [
     { name: 'Home', path: '/' },
-    { name: 'Investments', path: '/investments' },
-    { name: 'Dashboard', path: '/dashboard' },
+    ...(isAuthenticated ? [
+      { name: 'Investments', path: '/investments' },
+      { name: 'Dashboard', path: '/dashboard' },
+    ] : []),
     { name: 'About', path: '/about' },
     { name: 'Contact', path: '/contact' },
   ];
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('isAuthenticated');
+    sessionStorage.removeItem('userEmail');
+    sessionStorage.removeItem('userData');
+    setIsAuthenticated(false);
+    navigate('/');
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-sm border-b border-gray-100">
@@ -47,16 +65,29 @@ const Header = () => {
           </nav>
           
           <div className="hidden md:flex items-center gap-4">
-            <Button 
-              variant="outline" 
-              className="text-wealth-navy border-wealth-navy hover:bg-wealth-navy hover:text-white"
-              onClick={() => navigate('/login')}
-            >
-              Log In
-            </Button>
-            <Button className="bg-wealth-navy text-white hover:bg-wealth-blue" asChild>
-              <Link to="/register">Get Started</Link>
-            </Button>
+            {isAuthenticated ? (
+              <Button 
+                variant="outline" 
+                className="text-wealth-navy border-wealth-navy hover:bg-wealth-navy hover:text-white flex items-center gap-2"
+                onClick={handleLogout}
+              >
+                <LogOut size={16} />
+                Log Out
+              </Button>
+            ) : (
+              <>
+                <Button 
+                  variant="outline" 
+                  className="text-wealth-navy border-wealth-navy hover:bg-wealth-navy hover:text-white"
+                  onClick={() => navigate('/login')}
+                >
+                  Log In
+                </Button>
+                <Button className="bg-wealth-navy text-white hover:bg-wealth-blue" asChild>
+                  <Link to="/register">Get Started</Link>
+                </Button>
+              </>
+            )}
           </div>
           
           <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden">
@@ -82,19 +113,35 @@ const Header = () => {
               </Link>
             ))}
             <div className="flex flex-col gap-3 pt-4 border-t border-gray-100">
-              <Button 
-                variant="outline" 
-                className="w-full"
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  navigate('/login');
-                }}
-              >
-                Log In
-              </Button>
-              <Button className="w-full bg-wealth-navy text-white" asChild>
-                <Link to="/register" onClick={() => setIsMenuOpen(false)}>Get Started</Link>
-              </Button>
+              {isAuthenticated ? (
+                <Button 
+                  variant="outline" 
+                  className="w-full flex items-center justify-center gap-2"
+                  onClick={() => {
+                    handleLogout();
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  <LogOut size={16} />
+                  Log Out
+                </Button>
+              ) : (
+                <>
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      navigate('/login');
+                    }}
+                  >
+                    Log In
+                  </Button>
+                  <Button className="w-full bg-wealth-navy text-white" asChild>
+                    <Link to="/register" onClick={() => setIsMenuOpen(false)}>Get Started</Link>
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>
