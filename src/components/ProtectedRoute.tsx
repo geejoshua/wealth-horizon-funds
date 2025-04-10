@@ -1,7 +1,8 @@
 
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
+import { useAuth } from '@/context/AuthContext';
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -9,24 +10,16 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const location = useLocation();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    // Check authentication status from sessionStorage
-    const authStatus = sessionStorage.getItem('isAuthenticated');
-    setIsAuthenticated(authStatus === 'true');
-    
-    if (authStatus !== 'true') {
+    // Show toast if not authenticated
+    if (!isAuthenticated) {
       toast.error("Authentication required", {
         description: "Please log in to access this page",
       });
     }
-  }, []);
-
-  // Show nothing while checking authentication status
-  if (isAuthenticated === null) {
-    return null;
-  }
+  }, [isAuthenticated]);
 
   // Redirect to login if not authenticated, passing the intended location
   if (!isAuthenticated) {
