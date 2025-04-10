@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { CircleDollarSign, TrendingUp, Repeat } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
+import AutoInvestSetup from "./AutoInvestSetup";
 
 const InvestmentSummary = () => {
   const { userData } = useAuth();
@@ -15,12 +16,6 @@ const InvestmentSummary = () => {
       currency: 'NGN',
       minimumFractionDigits: 2,
     }).format(value);
-  };
-
-  const handleAutoInvest = () => {
-    toast.info("Auto-invest setup", {
-      description: "Configure your automatic investment schedule"
-    });
   };
 
   // Calculate earnings
@@ -73,13 +68,7 @@ const InvestmentSummary = () => {
             </div>
           </div>
           
-          <Button
-            onClick={handleAutoInvest}
-            className="bg-wealth-navy hover:bg-wealth-blue flex items-center gap-2"
-          >
-            <Repeat size={16} />
-            Set Up Auto-invest
-          </Button>
+          <AutoInvestSetup />
         </div>
       </CardContent>
     </Card>

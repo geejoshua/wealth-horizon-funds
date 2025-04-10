@@ -14,6 +14,17 @@ interface UserData {
     date: string;
     value: number;
   }[];
+  linkedBankAccount?: {
+    accountName: string;
+    accountNumber: string;
+    bankName: string;
+  };
+  autoInvest?: {
+    amount: number;
+    frequency: string;
+    startDate: string;
+    status: 'active' | 'cancelled';
+  };
 }
 
 interface AuthContextType {
