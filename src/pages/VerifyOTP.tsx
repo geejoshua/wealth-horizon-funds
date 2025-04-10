@@ -8,9 +8,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { CheckCircle2, Clock } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 const VerifyOTP = () => {
   const navigate = useNavigate();
+  const { verifyOTP } = useAuth();
   const [otp, setOtp] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [countdown, setCountdown] = useState(30);
@@ -49,29 +51,14 @@ const VerifyOTP = () => {
     setIsLoading(true);
     
     try {
-      // In a real app, this would validate the OTP with an API call
-      // For demo purposes, any 4-digit code is accepted
-      console.log("Verifying OTP:", otp);
-      
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Store authentication status
-      sessionStorage.setItem("isAuthenticated", "true");
-      
-      // Success message
-      toast.success("Login successful", {
-        description: "Welcome back to Wealth Horizon",
-      });
-      
-      // Navigate to dashboard
-      navigate("/dashboard");
+      // Use the verifyOTP function from AuthContext
+      verifyOTP(otp);
+      // The navigation is handled in the AuthContext
     } catch (error) {
       toast.error("Verification failed", {
         description: "Invalid verification code",
       });
       console.error("OTP verification error:", error);
-    } finally {
       setIsLoading(false);
     }
   };

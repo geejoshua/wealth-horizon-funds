@@ -92,7 +92,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       description: 'Welcome to your dashboard',
     });
     
-    navigate('/dashboard');
+    // Ensure redirection to dashboard
+    navigate('/dashboard', { replace: true });
   };
 
   const updateUserData = (data: Partial<UserData>) => {

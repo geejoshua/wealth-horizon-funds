@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -18,8 +17,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "sonner";
+import { useAuth } from "@/context/AuthContext";
 
-// Create the validation schema for the form
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(1, "Password is required"),
@@ -31,6 +30,13 @@ const Login = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { login, isAuthenticated } = useAuth();
+  
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -44,22 +50,14 @@ const Login = () => {
     setIsLoading(true);
     
     try {
-      // In a real app, this would be an API call to verify credentials
-      // For demo purposes, we'll simulate a successful login
-      console.log("Login attempt with:", data);
+      login(data.email);
       
-      // Store user email in sessionStorage for the OTP flow
-      sessionStorage.setItem("userEmail", data.email);
-      
-      // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Success message
       toast.success("Credentials verified", {
         description: "Please complete verification to continue",
       });
       
-      // Navigate to OTP verification
       navigate("/verify-otp");
     } catch (error) {
       toast.error("Login failed", {

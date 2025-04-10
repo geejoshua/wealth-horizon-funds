@@ -1,7 +1,4 @@
 
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/context/AuthContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import DashboardSidebar from "@/components/DashboardSidebar";
@@ -9,17 +6,10 @@ import WalletCard from "@/components/WalletCard";
 import InvestmentSummary from "@/components/InvestmentSummary";
 import RecentActivity from "@/components/RecentActivity";
 import PortfolioChart from "@/components/PortfolioChart";
+import { useAuth } from "@/context/AuthContext";
 
 const Dashboard = () => {
-  const { isAuthenticated, userData } = useAuth();
-  const navigate = useNavigate();
-  
-  // Ensure user is authenticated
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login');
-    }
-  }, [isAuthenticated, navigate]);
+  const { userData } = useAuth();
 
   if (!userData) {
     return null; // Show nothing while loading user data
