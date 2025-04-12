@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Investments from "./pages/Investments";
 import Portfolio from "./pages/Portfolio";
+import FundWallet from "./pages/FundWallet";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 import KYC from "./pages/KYC";
@@ -48,6 +49,11 @@ const App = () => (
             <Route path="/portfolio" element={
               <ProtectedRoute>
                 <Portfolio />
+              </ProtectedRoute>
+            } />
+            <Route path="/fund-wallet" element={
+              <ProtectedRoute>
+                <FundWallet />
               </ProtectedRoute>
             } />
             <Route path="/kyc" element={
