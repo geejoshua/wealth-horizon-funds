@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,8 +26,8 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { countries } from "@/lib/countries";
+import { useAuth } from "@/context/AuthContext";
 
-// Create the validation schema for the form
 const formSchema = z.object({
   firstName: z.string()
     .min(3, "First name must be at least 3 characters")
@@ -57,6 +56,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 const Register = () => {
   const navigate = useNavigate();
+  const { updateUserData } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [phoneCode, setPhoneCode] = useState("");
@@ -84,25 +84,33 @@ const Register = () => {
   };
 
   const onSubmit = (data: FormValues) => {
-    // For demonstration, we're just showing a success toast
     toast.success("Registration successful!", {
-      description: "Please complete your KYC verification",
+      description: "Please complete your KYC verification to continue",
     });
     console.log("Form submitted:", data);
     
-    // Store user data in sessionStorage for the KYC flow
-    sessionStorage.setItem("userData", JSON.stringify({
+    const userData = {
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
       country: data.country,
       phoneNumber: data.phoneNumber,
-    }));
+    };
     
-    // Navigate to KYC after successful registration
-    setTimeout(() => {
-      navigate("/kyc");
-    }, 1500);
+    sessionStorage.setItem("userData", JSON.stringify(userData));
+    sessionStorage.setItem("isAuthenticated", "true");
+    
+    updateUserData({
+      name: `${data.firstName} ${data.lastName}`,
+      email: data.email,
+      walletBalance: 0,
+      totalInvested: 0,
+      currentInvested: 0,
+      totalDeductions: 0,
+      portfolioGrowth: []
+    });
+    
+    navigate("/kyc");
   };
 
   return (

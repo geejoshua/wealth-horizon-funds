@@ -10,6 +10,7 @@ interface UserData {
   totalInvested: number;
   currentInvested: number;
   totalDeductions: number;
+  reinvestReturns?: boolean;
   portfolioGrowth: {
     date: string;
     value: number;
