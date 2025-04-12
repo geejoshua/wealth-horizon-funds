@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CircleDollarSign, TrendingUp, Repeat } from "lucide-react";
+import { CircleDollarSign, TrendingUp, Repeat, RefreshCw } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
 import AutoInvestSetup from "./AutoInvestSetup";
@@ -68,7 +68,15 @@ const InvestmentSummary = () => {
             </div>
           </div>
           
-          <AutoInvestSetup />
+          <div className="flex flex-col md:flex-row items-center gap-3">
+            {userData?.reinvestReturns && (
+              <div className="flex items-center gap-1 text-sm px-3 py-1 bg-blue-50 text-blue-700 rounded-full">
+                <RefreshCw className="h-3 w-3" />
+                <span>Auto-reinvesting returns</span>
+              </div>
+            )}
+            <AutoInvestSetup />
+          </div>
         </div>
       </CardContent>
     </Card>

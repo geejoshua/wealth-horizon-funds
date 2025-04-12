@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -47,6 +48,7 @@ import {
 } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
 import { countries } from "@/lib/countries";
 
 // Define the sections of the KYC flow
@@ -91,6 +93,7 @@ const transactionSchema = z.object({
   bankName: z.string().min(1, "Please select your bank"),
   accountNumber: z.string().length(10, "Account number must be exactly 10 digits").regex(/^\d+$/, "Account number must contain only digits"),
   accountName: z.string().min(1, "Please enter your account name"),
+  reinvestReturns: z.boolean().default(true),
 }).refine((data) => data.transactionPin === data.confirmTransactionPin, {
   message: "PINs do not match",
   path: ["confirmTransactionPin"],
@@ -151,6 +154,7 @@ const KYC = () => {
       bankName: "",
       accountNumber: "",
       accountName: "",
+      reinvestReturns: true,
     },
   });
 
@@ -698,6 +702,28 @@ const KYC = () => {
                               <Input 
                                 placeholder="Enter account name" 
                                 {...field} 
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={transactionForm.control}
+                        name="reinvestReturns"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 space-y-0 gap-2">
+                            <div className="space-y-0.5">
+                              <FormLabel>Reinvest Returns</FormLabel>
+                              <FormDescription>
+                                Would you like your investment returns to be automatically reinvested?
+                              </FormDescription>
+                            </div>
+                            <FormControl>
+                              <Switch
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
                               />
                             </FormControl>
                             <FormMessage />
