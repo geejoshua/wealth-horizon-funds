@@ -9,7 +9,8 @@ import {
   ShoppingBag, 
   Menu, 
   X,
-  ChevronRight
+  ChevronRight,
+  PieChart
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -23,6 +24,7 @@ const DashboardSidebar = () => {
 
   const menuItems = [
     { icon: Home, label: "Home", path: "/dashboard" },
+    { icon: PieChart, label: "My Portfolio", path: "/portfolio" },
     { icon: History, label: "Transaction History", path: "/transactions" },
     { icon: Wallet, label: "Fund Wallet", path: "/fund-wallet" },
     { icon: ShoppingBag, label: "Buy Assets", path: "/investments" },

@@ -9,6 +9,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Investments from "./pages/Investments";
+import Portfolio from "./pages/Portfolio";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 import KYC from "./pages/KYC";
@@ -42,6 +43,11 @@ const App = () => (
             <Route path="/investments" element={
               <ProtectedRoute>
                 <Investments />
+              </ProtectedRoute>
+            } />
+            <Route path="/portfolio" element={
+              <ProtectedRoute>
+                <Portfolio />
               </ProtectedRoute>
             } />
             <Route path="/kyc" element={

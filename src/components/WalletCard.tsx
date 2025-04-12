@@ -7,15 +7,45 @@ import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
 import AutoInvestSetup from "./AutoInvestSetup";
 import LinkBankAccount from "./LinkBankAccount";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
 const WalletCard = () => {
-  const { userData } = useAuth();
+  const { userData, updateUserData } = useAuth();
   const [showButtons, setShowButtons] = useState(false);
+  const [withdrawOpen, setWithdrawOpen] = useState(false);
+  const [withdrawAmount, setWithdrawAmount] = useState("");
 
   const handleWithdraw = () => {
-    toast.info("Withdrawal initiated", {
+    const amount = parseFloat(withdrawAmount);
+    
+    if (isNaN(amount) || amount <= 0) {
+      toast.error("Please enter a valid amount");
+      return;
+    }
+
+    if (amount > userData?.walletBalance!) {
+      toast.error("Insufficient balance");
+      return;
+    }
+
+    updateUserData({
+      walletBalance: userData!.walletBalance - amount
+    });
+
+    toast.success("Withdrawal initiated", {
       description: "You'll receive your funds within 24 hours"
     });
+    
+    setWithdrawAmount("");
+    setWithdrawOpen(false);
   };
 
   const handleFund = () => {
@@ -59,7 +89,7 @@ const WalletCard = () => {
               <Button
                 variant="outline"
                 className="border-wealth-navy text-wealth-navy hover:bg-wealth-navy hover:text-white flex gap-2 items-center"
-                onClick={handleWithdraw}
+                onClick={() => setWithdrawOpen(true)}
               >
                 <ArrowUpRight size={16} />
                 Withdraw
@@ -86,6 +116,41 @@ const WalletCard = () => {
             </p>
           </div>
         )}
+
+        {/* Withdraw Dialog */}
+        <Dialog open={withdrawOpen} onOpenChange={setWithdrawOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Withdraw from Wallet</DialogTitle>
+              <DialogDescription>
+                Withdraw funds from your wallet to your bank account
+              </DialogDescription>
+            </DialogHeader>
+            <div className="py-4">
+              <p className="text-sm mb-2">Available Balance: ₦{userData?.walletBalance.toLocaleString()}</p>
+              <Input
+                type="number"
+                placeholder="Enter amount"
+                value={withdrawAmount}
+                onChange={(e) => setWithdrawAmount(e.target.value)}
+              />
+            </div>
+            <DialogFooter>
+              <Button 
+                variant="outline" 
+                onClick={() => setWithdrawOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button 
+                onClick={handleWithdraw} 
+                className="bg-wealth-navy hover:bg-wealth-blue"
+              >
+                Confirm
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </CardContent>
     </Card>
   );
