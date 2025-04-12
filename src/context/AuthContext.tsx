@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 interface UserData {
   name: string;
   email: string;
+  phone?: string;
   walletBalance: number;
   totalInvested: number;
   currentInvested: number;
@@ -43,6 +44,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const mockUserData: UserData = {
   name: 'Alex Johnson',
   email: 'alex@example.com',
+  phone: '+234 812 345 6789',
   walletBalance: 25000.00,
   totalInvested: 100000.00,
   currentInvested: 124750.63,

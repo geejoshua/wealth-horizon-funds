@@ -16,6 +16,7 @@ import Register from "./pages/Register";
 import KYC from "./pages/KYC";
 import Login from "./pages/Login";
 import VerifyOTP from "./pages/VerifyOTP";
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,11 @@ const App = () => (
             <Route path="/kyc" element={
               <ProtectedRoute>
                 <KYC />
+              </ProtectedRoute>
+            } />
+            <Route path="/settings" element={
+              <ProtectedRoute>
+                <Settings />
               </ProtectedRoute>
             } />
             
