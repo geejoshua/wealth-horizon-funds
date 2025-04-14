@@ -4,16 +4,9 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, TrendingUp, Shield, BadgeDollarSign } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { toast } from "sonner";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
+import InvestDialog from './investments/InvestDialog';
+import InvestmentCard from './investments/InvestmentCard';
 
 const investmentProducts = {
   bonds: [
@@ -145,6 +138,18 @@ const InvestmentProducts = () => {
     setInvestDialogOpen(false);
   };
 
+  const renderProducts = (products: typeof investmentProducts.bonds) => (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {products.map((product, index) => (
+        <InvestmentCard
+          key={index}
+          {...product}
+          onInvestClick={() => handleInvestClick(product)}
+        />
+      ))}
+    </div>
+  );
+
   return (
     <section className="py-20 bg-wealth-silver">
       <div className="container mx-auto px-4 md:px-6">
@@ -156,126 +161,22 @@ const InvestmentProducts = () => {
         </div>
         
         <Tabs defaultValue="bonds" className="w-full" onValueChange={setActiveTab}>
-          <div className="flex justify-center mb-8">
-            <TabsList className="bg-white/50 p-1">
-              <TabsTrigger 
-                value="bonds"
-                className={`px-6 py-3 ${activeTab === "bonds" ? "bg-white text-wealth-navy shadow-sm" : ""}`}
-              >
-                Bonds
-              </TabsTrigger>
-              <TabsTrigger 
-                value="treasuryBills"
-                className={`px-6 py-3 ${activeTab === "treasuryBills" ? "bg-white text-wealth-navy shadow-sm" : ""}`}
-              >
-                Treasury Bills
-              </TabsTrigger>
-              <TabsTrigger 
-                value="mutualFunds"
-                className={`px-6 py-3 ${activeTab === "mutualFunds" ? "bg-white text-wealth-navy shadow-sm" : ""}`}
-              >
-                Mutual Funds
-              </TabsTrigger>
-            </TabsList>
-          </div>
+          <TabsList className="bg-white/50 p-1">
+            <TabsTrigger value="bonds">Bonds</TabsTrigger>
+            <TabsTrigger value="treasuryBills">Treasury Bills</TabsTrigger>
+            <TabsTrigger value="mutualFunds">Mutual Funds</TabsTrigger>
+          </TabsList>
           
           <TabsContent value="bonds" className="mt-0">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {investmentProducts.bonds.map((product, index) => (
-                <div key={index} className="investment-card">
-                  <div className="flex items-center justify-between mb-4">
-                    <div>{product.icon}</div>
-                    <span className="text-lg font-semibold text-green-600">{product.rate} <span className="text-sm text-wealth-gray">p.a.</span></span>
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3">{product.name}</h3>
-                  <p className="text-wealth-gray mb-4">{product.description}</p>
-                  <div className="grid grid-cols-3 gap-2 mb-6 text-sm">
-                    <div>
-                      <p className="text-wealth-gray mb-1">Risk Level</p>
-                      <p className="font-medium">{product.risk}</p>
-                    </div>
-                    <div>
-                      <p className="text-wealth-gray mb-1">Term</p>
-                      <p className="font-medium">{product.term}</p>
-                    </div>
-                    <div>
-                      <p className="text-wealth-gray mb-1">Minimum</p>
-                      <p className="font-medium">{product.minInvestment}</p>
-                    </div>
-                  </div>
-                  <Button 
-                    className="w-full bg-wealth-navy hover:bg-wealth-blue"
-                    onClick={() => handleInvestClick(product)}
-                  >
-                    Invest Now
-                  </Button>
-                </div>
-              ))}
-            </div>
+            {renderProducts(investmentProducts.bonds)}
           </TabsContent>
           
           <TabsContent value="treasuryBills" className="mt-0">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {investmentProducts.treasuryBills.map((product, index) => (
-                <div key={index} className="investment-card">
-                  <div className="flex items-center justify-between mb-4">
-                    <div>{product.icon}</div>
-                    <span className="text-lg font-semibold text-green-600">{product.rate} <span className="text-sm text-wealth-gray">p.a.</span></span>
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3">{product.name}</h3>
-                  <p className="text-wealth-gray mb-4">{product.description}</p>
-                  <div className="grid grid-cols-3 gap-2 mb-6 text-sm">
-                    <div>
-                      <p className="text-wealth-gray mb-1">Risk Level</p>
-                      <p className="font-medium">{product.risk}</p>
-                    </div>
-                    <div>
-                      <p className="text-wealth-gray mb-1">Term</p>
-                      <p className="font-medium">{product.term}</p>
-                    </div>
-                    <div>
-                      <p className="text-wealth-gray mb-1">Minimum</p>
-                      <p className="font-medium">{product.minInvestment}</p>
-                    </div>
-                  </div>
-                  <Button className="w-full bg-wealth-navy hover:bg-wealth-blue">
-                    Invest Now
-                  </Button>
-                </div>
-              ))}
-            </div>
+            {renderProducts(investmentProducts.treasuryBills)}
           </TabsContent>
           
           <TabsContent value="mutualFunds" className="mt-0">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {investmentProducts.mutualFunds.map((product, index) => (
-                <div key={index} className="investment-card">
-                  <div className="flex items-center justify-between mb-4">
-                    <div>{product.icon}</div>
-                    <span className="text-lg font-semibold text-green-600">{product.rate} <span className="text-sm text-wealth-gray">p.a.</span></span>
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3">{product.name}</h3>
-                  <p className="text-wealth-gray mb-4">{product.description}</p>
-                  <div className="grid grid-cols-3 gap-2 mb-6 text-sm">
-                    <div>
-                      <p className="text-wealth-gray mb-1">Risk Level</p>
-                      <p className="font-medium">{product.risk}</p>
-                    </div>
-                    <div>
-                      <p className="text-wealth-gray mb-1">Term</p>
-                      <p className="font-medium">{product.term}</p>
-                    </div>
-                    <div>
-                      <p className="text-wealth-gray mb-1">Minimum</p>
-                      <p className="font-medium">{product.minInvestment}</p>
-                    </div>
-                  </div>
-                  <Button className="w-full bg-wealth-navy hover:bg-wealth-blue">
-                    Invest Now
-                  </Button>
-                </div>
-              ))}
-            </div>
+            {renderProducts(investmentProducts.mutualFunds)}
           </TabsContent>
           
           <div className="flex justify-center mt-10">
@@ -288,47 +189,15 @@ const InvestmentProducts = () => {
           </div>
         </Tabs>
 
-        <Dialog open={investDialogOpen} onOpenChange={setInvestDialogOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Invest in {selectedProduct?.name}</DialogTitle>
-              <DialogDescription>
-                Enter the amount you want to invest
-              </DialogDescription>
-            </DialogHeader>
-            <div className="py-4 space-y-3">
-              <p className="text-sm text-wealth-gray">
-                Minimum Investment: {selectedProduct?.minInvestment}
-              </p>
-              <p className="text-sm text-wealth-gray">
-                Wallet Balance: ${userData?.walletBalance?.toLocaleString() || 0}
-              </p>
-              <Input
-                type="number"
-                placeholder="Enter amount"
-                value={investAmount}
-                onChange={(e) => setInvestAmount(e.target.value)}
-              />
-            </div>
-            <DialogFooter>
-              <Button 
-                variant="outline" 
-                onClick={() => {
-                  setInvestDialogOpen(false);
-                  setInvestAmount("");
-                }}
-              >
-                Cancel
-              </Button>
-              <Button 
-                onClick={handleInvestSubmit}
-                className="bg-wealth-navy hover:bg-wealth-blue"
-              >
-                Confirm Investment
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <InvestDialog
+          open={investDialogOpen}
+          onOpenChange={setInvestDialogOpen}
+          selectedProduct={selectedProduct}
+          investAmount={investAmount}
+          onInvestAmountChange={setInvestAmount}
+          onInvestSubmit={handleInvestSubmit}
+          walletBalance={userData?.walletBalance}
+        />
       </div>
     </section>
   );
