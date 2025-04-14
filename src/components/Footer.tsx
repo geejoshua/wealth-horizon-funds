@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
 
@@ -8,13 +7,13 @@ const Footer = () => {
       <div className="container mx-auto px-4 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
-            <Link to="/" className="flex items-center gap-2 mb-6">
+            <Link to="/" className="flex items-center gap-4 mb-6">
               <img 
                 src="/lovable-uploads/a8fb786b-03ee-4fb9-b4dd-01669f11ecb1.png" 
                 alt="Sorplux" 
-                className="h-8 w-auto bg-white/20 p-1 rounded"
+                className="h-16 w-16 bg-white/20 p-2 rounded"
               />
-              <span className="text-xl font-display font-bold text-white">Sorplux</span>
+              <span className="text-2xl font-display font-bold text-white">Sorplux</span>
             </Link>
             <p className="text-gray-300 text-sm mt-4">
               Building financial futures through smart, diversified investments and personalized portfolio management.
