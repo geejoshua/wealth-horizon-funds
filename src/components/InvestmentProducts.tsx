@@ -1,9 +1,19 @@
-
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from '@/components/ui/button';
 import { ArrowRight, TrendingUp, Shield, BadgeDollarSign } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/AuthContext";
 
 const investmentProducts = {
   bonds: [
@@ -97,7 +107,44 @@ const investmentProducts = {
 
 const InvestmentProducts = () => {
   const [activeTab, setActiveTab] = useState("bonds");
+  const [investDialogOpen, setInvestDialogOpen] = useState(false);
+  const [investAmount, setInvestAmount] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const { userData } = useAuth();
   
+  const handleInvestClick = (product: any) => {
+    setSelectedProduct(product);
+    setInvestDialogOpen(true);
+  };
+
+  const handleInvestSubmit = () => {
+    const amount = parseFloat(investAmount);
+    const minInvestment = parseFloat(selectedProduct.minInvestment.replace('$', '').replace(',', ''));
+    const walletBalance = userData?.walletBalance || 0;
+
+    if (isNaN(amount) || amount <= 0) {
+      toast.error("Please enter a valid amount");
+      return;
+    }
+
+    if (amount < minInvestment) {
+      toast.error(`Minimum investment amount is ${selectedProduct.minInvestment}`);
+      return;
+    }
+
+    if (amount > walletBalance) {
+      toast.error("Insufficient wallet balance");
+      return;
+    }
+
+    toast.success("Investment successful!", {
+      description: `You have successfully invested $${amount.toLocaleString()} in ${selectedProduct.name}`
+    });
+
+    setInvestAmount("");
+    setInvestDialogOpen(false);
+  };
+
   return (
     <section className="py-20 bg-wealth-silver">
       <div className="container mx-auto px-4 md:px-6">
@@ -156,7 +203,10 @@ const InvestmentProducts = () => {
                       <p className="font-medium">{product.minInvestment}</p>
                     </div>
                   </div>
-                  <Button className="w-full bg-wealth-navy hover:bg-wealth-blue">
+                  <Button 
+                    className="w-full bg-wealth-navy hover:bg-wealth-blue"
+                    onClick={() => handleInvestClick(product)}
+                  >
                     Invest Now
                   </Button>
                 </div>
@@ -237,6 +287,48 @@ const InvestmentProducts = () => {
             </Button>
           </div>
         </Tabs>
+
+        <Dialog open={investDialogOpen} onOpenChange={setInvestDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Invest in {selectedProduct?.name}</DialogTitle>
+              <DialogDescription>
+                Enter the amount you want to invest
+              </DialogDescription>
+            </DialogHeader>
+            <div className="py-4 space-y-3">
+              <p className="text-sm text-wealth-gray">
+                Minimum Investment: {selectedProduct?.minInvestment}
+              </p>
+              <p className="text-sm text-wealth-gray">
+                Wallet Balance: ${userData?.walletBalance?.toLocaleString() || 0}
+              </p>
+              <Input
+                type="number"
+                placeholder="Enter amount"
+                value={investAmount}
+                onChange={(e) => setInvestAmount(e.target.value)}
+              />
+            </div>
+            <DialogFooter>
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  setInvestDialogOpen(false);
+                  setInvestAmount("");
+                }}
+              >
+                Cancel
+              </Button>
+              <Button 
+                onClick={handleInvestSubmit}
+                className="bg-wealth-navy hover:bg-wealth-blue"
+              >
+                Confirm Investment
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </section>
   );
