@@ -43,10 +43,12 @@ const Header = () => {
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
             <Link to="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-wealth-navy to-wealth-blue rounded-md flex items-center justify-center">
-                <span className="text-white font-bold text-sm">WH</span>
-              </div>
-              <span className="text-xl font-display font-bold text-wealth-navy">Wealth Horizon</span>
+              <img 
+                src="/lovable-uploads/a8fb786b-03ee-4fb9-b4dd-01669f11ecb1.png" 
+                alt="Sorplux" 
+                className="h-8 w-auto"
+              />
+              <span className="text-xl font-display font-bold text-sorplux-blue">Sorplux</span>
             </Link>
           </div>
           
@@ -55,8 +57,8 @@ const Header = () => {
               <Link 
                 key={item.name}
                 to={item.path}
-                className={`text-sm font-medium transition-colors hover:text-wealth-blue ${
-                  isActive(item.path) ? 'text-wealth-blue' : 'text-wealth-gray'
+                className={`text-sm font-medium transition-colors hover:text-sorplux-blue ${
+                  isActive(item.path) ? 'text-sorplux-blue' : 'text-wealth-gray'
                 }`}
               >
                 {item.name}
@@ -68,7 +70,7 @@ const Header = () => {
             {isAuthenticated ? (
               <Button 
                 variant="outline" 
-                className="text-wealth-navy border-wealth-navy hover:bg-wealth-navy hover:text-white flex items-center gap-2"
+                className="text-sorplux-blue border-sorplux-blue hover:bg-sorplux-blue hover:text-white flex items-center gap-2"
                 onClick={handleLogout}
               >
                 <LogOut size={16} />
@@ -78,12 +80,12 @@ const Header = () => {
               <>
                 <Button 
                   variant="outline" 
-                  className="text-wealth-navy border-wealth-navy hover:bg-wealth-navy hover:text-white"
+                  className="text-sorplux-blue border-sorplux-blue hover:bg-sorplux-blue hover:text-white"
                   onClick={() => navigate('/login')}
                 >
                   Log In
                 </Button>
-                <Button className="bg-wealth-navy text-white hover:bg-wealth-blue" asChild>
+                <Button className="bg-sorplux-blue text-white hover:bg-sorplux-blue/80" asChild>
                   <Link to="/register">Get Started</Link>
                 </Button>
               </>
@@ -105,7 +107,7 @@ const Header = () => {
                 key={item.name}
                 to={item.path}
                 className={`text-base font-medium py-2 ${
-                  isActive(item.path) ? 'text-wealth-blue' : 'text-wealth-gray'
+                  isActive(item.path) ? 'text-sorplux-blue' : 'text-wealth-gray'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -137,7 +139,7 @@ const Header = () => {
                   >
                     Log In
                   </Button>
-                  <Button className="w-full bg-wealth-navy text-white" asChild>
+                  <Button className="w-full bg-sorplux-blue text-white" asChild>
                     <Link to="/register" onClick={() => setIsMenuOpen(false)}>Get Started</Link>
                   </Button>
                 </>

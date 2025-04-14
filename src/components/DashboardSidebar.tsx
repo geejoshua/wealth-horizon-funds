@@ -42,7 +42,7 @@ const DashboardSidebar = () => {
           variant="ghost" 
           size="icon" 
           onClick={toggleMobile}
-          className="rounded-full bg-wealth-navy text-white"
+          className="rounded-full bg-sorplux-blue text-white"
         >
           <Menu size={20} />
         </Button>
@@ -61,7 +61,7 @@ const DashboardSidebar = () => {
           collapsed && "items-center"
         )}>
           <h3 className={cn(
-            "text-sm text-wealth-gray",
+            "text-sm text-sorplux-gray",
             collapsed && "hidden"
           )}>
             Wallet Balance
@@ -83,8 +83,8 @@ const DashboardSidebar = () => {
               className={cn(
                 "flex items-center px-4 py-3 text-sm mb-1 hover:bg-gray-50",
                 location.pathname === item.path 
-                  ? "text-wealth-navy border-r-4 border-wealth-navy bg-blue-50" 
-                  : "text-wealth-gray",
+                  ? "text-sorplux-blue border-r-4 border-sorplux-blue bg-blue-50" 
+                  : "text-sorplux-gray",
                 collapsed && "justify-center"
               )}
             >
@@ -133,7 +133,7 @@ const DashboardSidebar = () => {
         
         {/* Wallet summary */}
         <div className="p-4 flex flex-col gap-1 border-b border-gray-100">
-          <h3 className="text-sm text-wealth-gray">Wallet Balance</h3>
+          <h3 className="text-sm text-sorplux-gray">Wallet Balance</h3>
           <p className="font-semibold text-xl">
             ₦{userData?.walletBalance.toLocaleString()}
           </p>
@@ -148,8 +148,8 @@ const DashboardSidebar = () => {
               className={cn(
                 "flex items-center px-4 py-3 text-sm",
                 location.pathname === item.path 
-                  ? "text-wealth-navy border-r-4 border-wealth-navy bg-blue-50" 
-                  : "text-wealth-gray"
+                  ? "text-sorplux-blue border-r-4 border-sorplux-blue bg-blue-50" 
+                  : "text-sorplux-gray"
               )}
               onClick={toggleMobile}
             >

@@ -4,15 +4,17 @@ import { Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="bg-wealth-navy text-white">
+    <footer className="bg-sorplux-blue text-white">
       <div className="container mx-auto px-4 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <Link to="/" className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 bg-white/20 rounded-md flex items-center justify-center">
-                <span className="text-white font-bold text-sm">WH</span>
-              </div>
-              <span className="text-xl font-display font-bold text-white">Wealth Horizon</span>
+              <img 
+                src="/lovable-uploads/a8fb786b-03ee-4fb9-b4dd-01669f11ecb1.png" 
+                alt="Sorplux" 
+                className="h-8 w-auto bg-white/20 p-1 rounded"
+              />
+              <span className="text-xl font-display font-bold text-white">Sorplux</span>
             </Link>
             <p className="text-gray-300 text-sm mt-4">
               Building financial futures through smart, diversified investments and personalized portfolio management.
@@ -70,7 +72,7 @@ const Footer = () => {
         <div className="border-t border-gray-700 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm">
-              © {new Date().getFullYear()} Wealth Horizon. All rights reserved.
+              © {new Date().getFullYear()} Sorplux. All rights reserved.
             </p>
             <p className="text-gray-400 text-sm mt-4 md:mt-0">
               Investment involves risk. Past performance is not a guarantee of future returns.

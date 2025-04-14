@@ -69,6 +69,14 @@ export default {
 					gold: '#D4AF37',
 					silver: '#F5F7FA',
 					gray: '#4A5568'
+				},
+				sorplux: {
+					blue: '#0069b4',
+					red: '#ff0000',
+					lightBlue: '#3a97d4',
+					darkBlue: '#004980',
+					gray: '#4A5568',
+					silver: '#F5F7FA',
 				}
 			},
 			borderRadius: {
