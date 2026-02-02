@@ -1,6 +1,7 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { LucideIcon } from "lucide-react";
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { LucideIcon } from 'lucide-react';
 
 interface InvestmentCardProps {
   name: string;
@@ -9,7 +10,7 @@ interface InvestmentCardProps {
   term: string;
   minInvestment: string;
   icon: React.ReactNode;
-  onInvestClick?: () => void;
+  onInvestClick: () => void;
 }
 
 const InvestmentCard = ({
@@ -45,16 +46,14 @@ const InvestmentCard = ({
           </div>
         </div>
       </CardContent>
-      {onInvestClick && (
-        <CardFooter>
-          <Button
-            className="w-full bg-wealth-navy hover:bg-wealth-blue"
-            onClick={onInvestClick}
-          >
-            Invest Now
-          </Button>
-        </CardFooter>
-      )}
+      <CardFooter>
+        <Button 
+          className="w-full bg-wealth-navy hover:bg-wealth-blue"
+          onClick={onInvestClick}
+        >
+          Invest Now
+        </Button>
+      </CardFooter>
     </Card>
   );
 };

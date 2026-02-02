@@ -1,8 +1,9 @@
-// import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-// import { X, LogOut } from "lucide-react";
-// import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+
+import { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { X, LogOut } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface MobileNavigationProps {
   isMenuOpen: boolean;
@@ -17,15 +18,15 @@ const MobileNavigation = ({
   setIsMenuOpen,
   navItems,
   isAuthenticated,
-  handleLogout,
+  handleLogout
 }: MobileNavigationProps) => {
   const location = useLocation();
-  // const navigate = useNavigate();
-
+  const navigate = useNavigate();
+  
   const isActive = (path: string) => location.pathname === path;
-
+  
   if (!isMenuOpen) return null;
-
+  
   return (
     <div className="md:hidden bg-white border-t border-gray-100">
       <div className="container px-4 py-4 flex flex-col gap-4">
@@ -35,14 +36,14 @@ const MobileNavigation = ({
             to={item.path}
             className={cn(
               "text-base font-medium py-2",
-              isActive(item.path) ? "text-sorplux-blue" : "text-wealth-gray",
+              isActive(item.path) ? "text-sorplux-blue" : "text-wealth-gray"
             )}
             onClick={() => setIsMenuOpen(false)}
           >
             {item.name}
           </Link>
         ))}
-        {/* <div className="flex flex-col gap-3 pt-4 border-t border-gray-100">
+        <div className="flex flex-col gap-3 pt-4 border-t border-gray-100">
           {isAuthenticated ? (
             <Button 
               variant="outline" 
@@ -72,7 +73,7 @@ const MobileNavigation = ({
               </Button>
             </>
           )}
-        </div> */}
+        </div>
       </div>
     </div>
   );

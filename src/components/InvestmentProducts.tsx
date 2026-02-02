@@ -3,6 +3,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Shield, BadgeDollarSign } from "lucide-react";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
+import { useAuth } from "@/context/AuthContext";
+import InvestDialog from "./investments/InvestDialog";
+import InvestmentCard from "./investments/InvestmentCard";
 
 const investmentProducts = {
   bonds: [
@@ -123,6 +127,59 @@ const investmentProducts = {
 
 const InvestmentProducts = () => {
   const [activeTab, setActiveTab] = useState("bonds");
+  const [investDialogOpen, setInvestDialogOpen] = useState(false);
+  const [investAmount, setInvestAmount] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const { userData } = useAuth();
+
+  const handleInvestClick = (product: any) => {
+    setSelectedProduct(product);
+    setInvestDialogOpen(true);
+  };
+
+  const handleInvestSubmit = () => {
+    const amount = parseFloat(investAmount);
+    const minInvestment = parseFloat(
+      selectedProduct.minInvestment.replace("$", "").replace(",", ""),
+    );
+    const walletBalance = userData?.walletBalance || 0;
+
+    if (isNaN(amount) || amount <= 0) {
+      toast.error("Please enter a valid amount");
+      return;
+    }
+
+    if (amount < minInvestment) {
+      toast.error(
+        `Minimum investment amount is ${selectedProduct.minInvestment}`,
+      );
+      return;
+    }
+
+    if (amount > walletBalance) {
+      toast.error("Insufficient wallet balance");
+      return;
+    }
+
+    toast.success("Investment successful!", {
+      description: `You have successfully invested $${amount.toLocaleString()} in ${selectedProduct.name}`,
+    });
+
+    setInvestAmount("");
+    setInvestDialogOpen(false);
+  };
+
+  const renderProducts = (products: typeof investmentProducts.bonds) => (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {products.map((product, index) => (
+        <InvestmentCard
+          key={index}
+          {...product}
+          onInvestClick={() => handleInvestClick(product)}
+        />
+      ))}
+    </div>
+  );
 
   return (
     <section className="py-20 bg-wealth-silver">
@@ -135,7 +192,11 @@ const InvestmentProducts = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="bonds" className="w-full">
+        <Tabs
+          defaultValue="bonds"
+          className="w-full"
+          onValueChange={setActiveTab}
+        >
           <TabsList className="bg-white/50 p-1">
             <TabsTrigger value="bonds">Bonds</TabsTrigger>
             <TabsTrigger value="treasuryBills">Treasury Bills</TabsTrigger>
@@ -191,10 +252,7 @@ const InvestmentProducts = () => {
               variant="outline"
               className="group border-wealth-navy text-wealth-navy hover:bg-wealth-navy hover:text-white px-8"
             >
-              <Link
-                to="/#investment-products"
-                className="flex items-center gap-2"
-              >
+              <Link to="/investments" className="flex items-center gap-2">
                 View All Investment Options
                 <ArrowRight
                   size={16}
@@ -204,6 +262,16 @@ const InvestmentProducts = () => {
             </Button>
           </div>
         </Tabs>
+
+        <InvestDialog
+          open={investDialogOpen}
+          onOpenChange={setInvestDialogOpen}
+          selectedProduct={selectedProduct}
+          investAmount={investAmount}
+          onInvestAmountChange={setInvestAmount}
+          onInvestSubmit={handleInvestSubmit}
+          walletBalance={userData?.walletBalance}
+        />
       </div>
     </section>
   );
