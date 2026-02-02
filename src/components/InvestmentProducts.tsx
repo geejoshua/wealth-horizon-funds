@@ -3,10 +3,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Shield, BadgeDollarSign } from "lucide-react";
 import { Link } from "react-router-dom";
-import { toast } from "sonner";
-import { useAuth } from "@/context/AuthContext";
-import InvestDialog from "./investments/InvestDialog";
-import InvestmentCard from "./investments/InvestmentCard";
 
 const investmentProducts = {
   bonds: [
@@ -126,49 +122,7 @@ const investmentProducts = {
 };
 
 const InvestmentProducts = () => {
-  // const [investDialogOpen, setInvestDialogOpen] = useState(false);
-  // const [investAmount, setInvestAmount] = useState("");
-  // const { userData } = useAuth();
-
-  // const handleInvestSubmit = () => {
-  //   const amount = parseFloat(investAmount);
-  //   const minInvestment = parseFloat(
-  //     selectedProduct.minInvestment.replace("$", "").replace(",", ""),
-  //   );
-  //   const walletBalance = userData?.walletBalance || 0;
-
-  //   if (isNaN(amount) || amount <= 0) {
-  //     toast.error("Please enter a valid amount");
-  //     return;
-  //   }
-
-  //   if (amount < minInvestment) {
-  //     toast.error(
-  //       `Minimum investment amount is ${selectedProduct.minInvestment}`,
-  //     );
-  //     return;
-  //   }
-
-  //   if (amount > walletBalance) {
-  //     toast.error("Insufficient wallet balance");
-  //     return;
-  //   }
-
-  //   toast.success("Investment successful!", {
-  //     description: `You have successfully invested $${amount.toLocaleString()} in ${selectedProduct.name}`,
-  //   });
-
-  //   setInvestAmount("");
-  //   setInvestDialogOpen(false);
-  // };
-
-  const renderProducts = (products: typeof investmentProducts.bonds) => (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {products.map((product, index) => (
-        <InvestmentCard key={index} {...product} />
-      ))}
-    </div>
-  );
+  const [activeTab, setActiveTab] = useState("bonds");
 
   return (
     <section className="py-20 bg-wealth-silver">
@@ -189,7 +143,38 @@ const InvestmentProducts = () => {
           </TabsList>
 
           <TabsContent value="bonds" className="mt-0">
-            {renderProducts(investmentProducts.bonds)}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {investmentProducts.bonds.map((product, index) => (
+                <div key={index} className="investment-card">
+                  <div className="flex items-center justify-between mb-4">
+                    <div>{product.icon}</div>
+                    <span className="text-lg font-semibold text-green-600">
+                      {product.rate}{" "}
+                      <span className="text-sm text-wealth-gray">p.a.</span>
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">{product.name}</h3>
+                  <p className="text-wealth-gray mb-4">{product.description}</p>
+                  <div className="grid grid-cols-3 gap-2 mb-6 text-sm">
+                    <div>
+                      <p className="text-wealth-gray mb-1">Risk Level</p>
+                      <p className="font-medium">{product.risk}</p>
+                    </div>
+                    <div>
+                      <p className="text-wealth-gray mb-1">Term</p>
+                      <p className="font-medium">{product.term}</p>
+                    </div>
+                    <div>
+                      <p className="text-wealth-gray mb-1">Minimum</p>
+                      <p className="font-medium">{product.minInvestment}</p>
+                    </div>
+                  </div>
+                  <Button className="w-full bg-wealth-navy hover:bg-wealth-blue">
+                    Invest Now
+                  </Button>
+                </div>
+              ))}
+            </div>
           </TabsContent>
 
           <TabsContent value="treasuryBills" className="mt-0">
@@ -219,16 +204,6 @@ const InvestmentProducts = () => {
             </Button>
           </div>
         </Tabs>
-
-        {/* <InvestDialog
-          open={investDialogOpen}
-          onOpenChange={setInvestDialogOpen}
-          selectedProduct={selectedProduct}
-          investAmount={investAmount}
-          onInvestAmountChange={setInvestAmount}
-          onInvestSubmit={handleInvestSubmit}
-          walletBalance={userData?.walletBalance}
-        /> */}
       </div>
     </section>
   );
